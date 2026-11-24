@@ -1,0 +1,17 @@
+points = 10000
+edge_width_px = 2.0
+export_svg = true
+gray = 205
+export_png = true
+output_dir = "generated"
+spacing_px = 100.0
+detail_output_px = 1600
+detail_side_px = 1000.0
+crop_rotation_radians = 0.17320508075688773
+dot_radius_px = 7.5
+crop_center = [0.13718, 0.29413]
+preview_max_px = 2000
+noise_percent = 10.0
+generations = 4
+seed = 20261006
+aspect_ratio = 1.0
