@@ -1,45 +1,4 @@
-"""
-    tiling_coordinates((circumference_m, height_m); density_per_in2,
-                       refinement_steps=nothing, seed=20261009)
-        -> (coordinates_mm, spacing_mm, info)
 
-Generate vertices of a seamless square/equilateral-triangle tiling on a cylinder.
-Coordinates are an N × 2 Float64 matrix in MILLIMETERS, with 0 <= x < circumference.
-The rectangle dimensions are in METERS. Density input and all reported densities
-are in POINTS PER SQUARE INCH. No noise is applied here.
-
-This is a randomized periodic Stampfli approximant, not a strictly aperiodic
-Schlottmann tiling. Unrolling a cylinder necessarily repeats after one full turn.
-At each refinement, every distinct vertex independently selects one of the two
-compatible dodecagon fillings (rotated by 30 degrees), using a reproducible seeded
-hash. Periodic copies share the same choice. Repeated local motifs remain.
-
-By default, refinement depth AND coarse triangular-lattice period (p,q) are
-chosen from the requested density and circumference. Depths 1 through 8 are
-searched; the deepest whose closest compatible MEAN density is within 0.1%
-of the target is selected. This is a practical hierarchy-selection rule, not
-an optimization or guarantee of minimal visible repetition. If no depth meets
-that tolerance, the closest candidate is used with a warning and a flag in info.
-An explicit refinement_steps integer overrides the automatic choice.
-The tiling is uniformly scaled to the exact circumference. All tile edges have
-the returned spacing_mm.
-The finite rectangle's point count can differ from its mean-density prediction
-because of its top and bottom boundaries. No points are removed to force a count.
-info reports both densities and the relative mean-density error in percent.
-
-For circumference 2 m and density 258.064/in², automatic selection uses two steps
-and gives mean density 258.115468612/in². Height is freely selectable.
-More steps introduce larger hierarchical motifs, not a guarantee of less visible
-repetition. Choices vary throughout the full circumference at every step.
-
-Exact integer coordinates in Q(sqrt(3)) prevent duplicate shared vertices.
-Only intermediate tiles and the final vertex set are stored. No neighbor search.
-A fixed seed gives identical points (including ordering) for identical inputs.
-
-Example:
-    points, spacing, info = tiling_coordinates((2.0, 1.0);
-        density_per_in2=258.064, seed=123)
-"""
 function tiling_coordinates(rectangle_size_m; density_per_in2,
                             refinement_steps=nothing, seed=20261009)
     length(rectangle_size_m)==2 || throw(ArgumentError("Use (circumference_m, height_m)."))
